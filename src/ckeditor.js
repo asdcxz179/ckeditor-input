@@ -68,6 +68,8 @@ import Title from '@ckeditor/ckeditor5-heading/src/title.js';
 import TodoList from '@ckeditor/ckeditor5-list/src/todolist';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
 import CpkmInput from './cpkm-input/input.js';
+import CpkmInputNone from './cpkm-input-none/input.js';
+import ElectronicSign from './electronic-sign/sign.js';
 
 class Editor extends InlineEditor {}
 
@@ -137,7 +139,9 @@ Editor.builtinPlugins = [
 	Title,
 	TodoList,
 	Underline,
-	CpkmInput
+	CpkmInput,
+	CpkmInputNone,
+	ElectronicSign
 ];
 
 // Editor configuration.
@@ -181,6 +185,8 @@ Editor.defaultConfig = {
 			'findAndReplace',
 			'sourceEditing',
 			'cpkmInput',
+			'cpkmInputNone',
+			'electronicSign',
 		]
 	},
 	language: 'zh',

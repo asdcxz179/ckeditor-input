@@ -5,7 +5,6 @@ import inputIcon from '@ckeditor/ckeditor5-page-break/theme/icons/pagebreak.svg'
 export default class CpkmInputUI extends Plugin {
 
     init() {
-        console.log( 'CpkmInputUI#init() got called' );
         this._defineSchema();
     }
 
@@ -18,7 +17,7 @@ export default class CpkmInputUI extends Plugin {
             isLimit: true,
             isInline: true,
             allowIn: [ '$root', '$container' ],
-            inheritAllFrom: '$blockObject'
+            inheritAllFrom: '$inlineObject'
         });
         
         // The "simpleBox" button must be registered among the UI components of the editor
@@ -33,7 +32,7 @@ export default class CpkmInputUI extends Plugin {
             buttonView.set( {
                 // The t() function helps localize the editor. All strings enclosed in t() can be
                 // translated and change when the language of the editor changes.
-                label: t( 'Cpkm Input' ),
+                label: "有底線文字輸入框",
                 withText: true,
                 tooltip: true
             } );

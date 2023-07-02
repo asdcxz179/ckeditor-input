@@ -1,0 +1,7 @@
+.cpkm-input {
+    min-width: 100px;
+    display: inline-block;
+    border-bottom: 1px solid #000;
+    text-align:center;
+    max-width: fit-content;
+}

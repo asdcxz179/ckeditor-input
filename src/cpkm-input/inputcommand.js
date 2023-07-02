@@ -1,6 +1,5 @@
 
 import { Command } from 'ckeditor5/src/core';
-import { findOptimalInsertionRange } from 'ckeditor5/src/widget';
 /**
  * The page break command.
  *
@@ -15,9 +14,6 @@ export default class InputCommand extends Command {
      * @inheritDoc
      */
     refresh() {
-        const model = this.editor.model;
-        const schema = model.schema;
-        const selection = model.document.selection;
         this.isEnabled = true;
     }
     /**
