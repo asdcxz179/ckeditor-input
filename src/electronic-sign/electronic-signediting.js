@@ -15,7 +15,7 @@ export default class ElectronicSignEditing extends Plugin {
         conversion.elementToElement( {
             model: 'electronicSign',
             view: {
-                name: 'img',
+                name: 'span',
                 classes: 'electronic-sign',
             }
         } );
@@ -23,14 +23,14 @@ export default class ElectronicSignEditing extends Plugin {
         conversion.for( 'upcast' ).elementToElement( {
             model: 'electronicSign',
             view: {
-                name: 'img',
+                name: 'span',
                 classes: 'electronic-sign',
             }
         } );
         conversion.for( 'dataDowncast' ).elementToElement( {
             model: 'electronicSign',
             view: {
-                name: 'img',
+                name: 'span',
                 classes: 'electronic-sign',
             }
         } );
@@ -38,7 +38,7 @@ export default class ElectronicSignEditing extends Plugin {
             model: 'electronicSign',
             view: ( modelElement, { writer: viewWriter } ) => {
                 // Note: You use a more specialized createEditableElement() method here.
-                const input = viewWriter.createEditableElement( 'img', { class: 'electronic-sign' } );
+                const input = viewWriter.createEditableElement( 'span', { classes: 'electronic-sign' } );
                 return toWidgetEditable( input, viewWriter );
             }
         } );
