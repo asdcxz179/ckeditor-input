@@ -1,0 +1,11 @@
+.electronic-sign {
+    min-width: 200px;
+    min-height: 100px;
+    max-width: 200px;
+}
+
+@media print{
+    .electronic-sign{
+        
+    }
+}

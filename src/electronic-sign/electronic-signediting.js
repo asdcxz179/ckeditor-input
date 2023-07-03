@@ -1,6 +1,6 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import ElectronicSignCommand from './electronic-signcommand.js';
-import './theme/input.css';
+import './theme/sign.css';
 
 export default class ElectronicSignEditing extends Plugin {
 
@@ -15,7 +15,7 @@ export default class ElectronicSignEditing extends Plugin {
         conversion.elementToElement( {
             model: 'electronicSign',
             view: {
-                name: 'canvas',
+                name: 'img',
                 classes: 'electronic-sign',
             }
         } );
@@ -23,14 +23,14 @@ export default class ElectronicSignEditing extends Plugin {
         conversion.for( 'upcast' ).elementToElement( {
             model: 'electronicSign',
             view: {
-                name: 'canvas',
+                name: 'img',
                 classes: 'electronic-sign',
             }
         } );
         conversion.for( 'dataDowncast' ).elementToElement( {
             model: 'electronicSign',
             view: {
-                name: 'canvas',
+                name: 'img',
                 classes: 'electronic-sign',
             }
         } );
@@ -38,7 +38,7 @@ export default class ElectronicSignEditing extends Plugin {
             model: 'electronicSign',
             view: ( modelElement, { writer: viewWriter } ) => {
                 // Note: You use a more specialized createEditableElement() method here.
-                const input = viewWriter.createEditableElement( 'canvas', { class: 'electronic-sign' } );
+                const input = viewWriter.createEditableElement( 'img', { class: 'electronic-sign' } );
                 return toWidgetEditable( input, viewWriter );
             }
         } );
