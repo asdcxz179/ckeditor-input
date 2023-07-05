@@ -59,7 +59,7 @@ export default class CpkmInputEditing extends Plugin {
             }
 
             const CpkmView = viewWriter.createContainerElement( 'span', {
-                class: 'cpkm-basic',
+                class: 'cpkm-input',
                 contenteditable: true,
                 ...extend
             } );

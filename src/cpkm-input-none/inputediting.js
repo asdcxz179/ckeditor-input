@@ -16,7 +16,7 @@ export default class CpkmInputNoneEditing extends Plugin {
         conversion.for( 'upcast' ).elementToElement( {
             view: {
                 name: 'span',
-                classes: [ 'cpkm-input' ],
+                classes: [ 'cpkm-input-none' ],
                 attributes: {
                     contenteditable: true,
                 }
@@ -60,7 +60,7 @@ export default class CpkmInputNoneEditing extends Plugin {
             }
 
             const CpkmView = viewWriter.createContainerElement( 'span', {
-                class: 'cpkm-basic',
+                class: 'cpkm-input-none',
                 contenteditable: true,
                 ...extend
             } );
