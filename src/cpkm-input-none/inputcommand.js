@@ -14,6 +14,9 @@ export default class InputNoneCommand extends Command {
      * @inheritDoc
      */
     refresh() {
+        const model = this.editor.model;
+        const selection = model.document.selection;
+        const isAllowed = model.schema.checkChild( selection.focus.parent, 'cpkmInputNone' );
         this.isEnabled = true;
     }
     /**
@@ -21,17 +24,16 @@ export default class InputNoneCommand extends Command {
      *
      * @fires execute
      */
-    execute() {
+    execute({target, width}) {
         const model = this.editor.model;
+        const selection = editor.model.document.selection;
         model.change(writer => {
-            const inputInsertElement = writer.createElement('cpkmInputNone');
-            model.insertObject(inputInsertElement);
-            // const selection = editor.model.document.selection;
-            // const insertPosition = selection.getFirstPosition();
-
-            // editor.model.change(writer => {
-            // writer.insertElement(inputInsertElement, insertPosition);
-            // });
+            const BasicInsertElement = writer.createElement('cpkmInputNone',  {
+                ...Object.fromEntries( selection.getAttributes() ),
+                "data-target": target,
+                "data-width": width,
+            });
+            model.insertObject(BasicInsertElement, null, null, { setSelection: 'on' });
         });
     }
 }

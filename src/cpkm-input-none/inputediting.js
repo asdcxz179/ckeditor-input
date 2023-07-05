@@ -1,6 +1,7 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import InputCommand from './inputcommand.js';
 import './theme/input.css';
+import {  toWidget } from '@ckeditor/ckeditor5-widget';
 
 export default class CpkmInputNoneEditing extends Plugin {
 
@@ -12,45 +13,61 @@ export default class CpkmInputNoneEditing extends Plugin {
     _defineConverters() {                                                      // ADDED
         const conversion = this.editor.conversion;
 
-        conversion.elementToElement( {
-            model: 'cpkmInputNone',
+        conversion.for( 'upcast' ).elementToElement( {
             view: {
                 name: 'span',
-                classes: 'cpkm-input-none',
+                classes: [ 'cpkm-input' ],
                 attributes: {
-                    'contenteditable': true,
+                    contenteditable: true,
                 }
+            },
+            model:  ( viewElement, { writer: modelWriter } ) => {
+                const target = viewElement.getAttribute( 'data-target' );
+                const width = viewElement.getAttribute( 'data-width' );
+                return modelWriter.createElement( 'cpkmInputNone' ,{
+                    "data-target": target,
+                    "data-width": width,
+                });
             }
         } );
 
-        conversion.for( 'upcast' ).elementToElement( {
-            model: 'cpkmInputNone',
-            view: {
-                name: 'span',
-                classes: 'cpkm-input-none',
-                attributes: {
-                    'contenteditable': true,
-                }
-            }
-        } );
         conversion.for( 'dataDowncast' ).elementToElement( {
             model: 'cpkmInputNone',
-            view: {
-                name: 'span',
-                classes: 'cpkm-input-none',
-                attributes: {
-                    'contenteditable': true,
-                }
-            }
+            view: ( modelItem, { writer: viewWriter } ) => createView( modelItem, viewWriter )
         } );
         conversion.for( 'editingDowncast' ).elementToElement( {
             model: 'cpkmInputNone',
-            view: ( modelElement, { writer: viewWriter } ) => {
+            view: ( modelItem, { writer: viewWriter } ) => {
                 // Note: You use a more specialized createEditableElement() method here.
-                const input = viewWriter.createEditableElement( 'span', { class: 'cpkm-input-none' } );
-                return toWidgetEditable( input, viewWriter );
+                const widgetElement = createView( modelItem, viewWriter );
+                return toWidget( widgetElement, viewWriter );
             }
         } );
+        
+        function createView( modelItem, viewWriter ) {
+            const target = modelItem.getAttribute( 'data-target' );
+            const width = modelItem.getAttribute( 'data-width' );
+
+            let extend = {
+
+            };
+            if(width) {
+                extend.style = `min-width:${width}px;`;
+            }
+
+            if(target) {
+                extend["data-target"] = target;
+            }
+
+            const CpkmView = viewWriter.createContainerElement( 'span', {
+                class: 'cpkm-basic',
+                contenteditable: true,
+                ...extend
+            } );
+
+
+            return CpkmView;
+        }
 
     }
 }

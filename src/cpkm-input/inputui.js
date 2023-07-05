@@ -1,11 +1,80 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
-import inputIcon from '@ckeditor/ckeditor5-page-break/theme/icons/pagebreak.svg';
+import { ButtonView, ContextualBalloon, clickOutsideHandler } from '@ckeditor/ckeditor5-ui';
+import FormView from './inputview';
 
 export default class CpkmInputUI extends Plugin {
+    static get requires() {
+        return [ ContextualBalloon ];
+    }
 
     init() {
+        this._balloon = this.editor.plugins.get( ContextualBalloon );
+        this.formView = this._createFormView();
         this._defineSchema();
+    }
+
+    _createFormView() {
+        const editor = this.editor;
+        const formView = new FormView( editor.locale );
+
+        this.listenTo( formView, 'submit', () => {
+            const target = formView.targetInputView.fieldView.element.value;
+            const width = formView.widthInputView.fieldView.element.value;
+
+            editor.model.change( writer => {
+                editor.execute( 'insertCpkmInput', {target, width});
+                editor.editing.view.focus();
+            } );
+            this._hideUI();
+        } );
+
+        this.listenTo( formView, 'cancel', () => {
+            this._hideUI();
+        } );
+
+        clickOutsideHandler( {
+            emitter: formView,
+            activator: () => this._balloon.visibleView === formView,
+            contextElements: [ this._balloon.view.element ],
+            callback: () => this._hideUI()
+        });
+
+        return formView;
+    }
+
+    _hideUI() {
+        this.formView.targetInputView.fieldView.value = '';
+        this.formView.widthInputView.fieldView.value = '';
+        this.formView.element.reset();
+
+        this._balloon.remove( this.formView );
+
+        // Focus the editing view after closing the form view.
+        this.editor.editing.view.focus();
+    }
+
+    _getBalloonPositionData() {
+        const view = this.editor.editing.view;
+        const viewDocument = view.document;
+        let target = null;
+
+        // Set a target position by converting view selection range to DOM.
+        target = () => view.domConverter.viewRangeToDom(
+            viewDocument.selection.getFirstRange()
+        );
+
+        return {
+            target
+        };
+    }
+
+    _showUI() {
+        this._balloon.add( {
+            view: this.formView,
+            position: this._getBalloonPositionData()
+        } );
+
+        this.formView.focus();
     }
 
     _defineSchema() {                                                          // ADDED
@@ -17,7 +86,8 @@ export default class CpkmInputUI extends Plugin {
             isLimit: true,
             isInline: true,
             allowIn: [ '$root', '$container' ],
-            inheritAllFrom: '$inlineObject'
+            inheritAllFrom: '$inlineObject',
+            allowAttributes: [ 'data-target', 'data-width', 'contenteditable' ],
         });
         
         // The "simpleBox" button must be registered among the UI components of the editor
@@ -37,11 +107,14 @@ export default class CpkmInputUI extends Plugin {
                 tooltip: true
             } );
 
+            this.listenTo( buttonView, 'execute', () => {
+                this._showUI();
+            } );
+
             // Bind the state of the button to the command.
-            buttonView.bind( 'isOn', 'isEnabled' ).to( command, 'value', 'isEnabled' );
+            buttonView.bind( 'isOn', 'isEnabled' ).to( command );
 
             // Execute the command when the button is clicked (executed).
-            this.listenTo( buttonView, 'execute', () => editor.execute( 'insertCpkmInput' ) );
 
             return buttonView;
         } );

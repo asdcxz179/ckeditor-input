@@ -14,6 +14,9 @@ export default class InputCommand extends Command {
      * @inheritDoc
      */
     refresh() {
+        const model = this.editor.model;
+        const selection = model.document.selection;
+        const isAllowed = model.schema.checkChild( selection.focus.parent, 'cpkmInput' );
         this.isEnabled = true;
     }
     /**
@@ -21,11 +24,17 @@ export default class InputCommand extends Command {
      *
      * @fires execute
      */
-    execute() {
+    execute({target, width}) {
         const model = this.editor.model;
+        const selection = editor.model.document.selection;
         model.change(writer => {
-            const inputInsertElement = writer.createElement('cpkmInput');
-            model.insertObject(inputInsertElement);
+            const BasicInsertElement = writer.createElement('cpkmInput',  {
+                ...Object.fromEntries( selection.getAttributes() ),
+                "data-target": target,
+                "data-width": width,
+            });
+            // const inputInsertElement = writer.createElement('cpkmInput');
+            model.insertObject(BasicInsertElement, null, null, { setSelection: 'on' });
             // const selection = editor.model.document.selection;
             // const insertPosition = selection.getFirstPosition();
 

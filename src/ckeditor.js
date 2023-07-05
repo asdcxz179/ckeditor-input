@@ -70,6 +70,7 @@ import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
 import CpkmInput from './cpkm-input/input.js';
 import CpkmInputNone from './cpkm-input-none/input.js';
 import ElectronicSign from './electronic-sign/sign.js';
+// import CpkmBasic from './cpkm-basic/basic.js';
 
 class Editor extends InlineEditor {}
 
@@ -141,7 +142,8 @@ Editor.builtinPlugins = [
 	Underline,
 	CpkmInput,
 	CpkmInputNone,
-	ElectronicSign
+	ElectronicSign,
+	// CpkmBasic
 ];
 
 // Editor configuration.
@@ -187,6 +189,7 @@ Editor.defaultConfig = {
 			'cpkmInput',
 			'cpkmInputNone',
 			'electronicSign',
+			// 'cpkmBasic',
 		]
 	},
 	language: 'zh',
