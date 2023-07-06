@@ -87,8 +87,12 @@ export default class CpkmBasicUI extends Plugin {
             isInline: true,
             allowIn: [ '$root', '$container' ],
             inheritAllFrom: '$inlineObject',
-            allowAttributes: [ 'data-target', 'data-width', 'contenteditable' ],
+            allowAttributes: [ 'data-target', 'data-width', 'contenteditable', 'alignment' ],
         });
+
+        editor.editing.view.document.on( 'change:isFocused', ( evt, data, isFocused ) => {
+            console.log( `View document is focused: ${ isFocused }.` );
+        } );
         
         // The "simpleBox" button must be registered among the UI components of the editor
         // to be displayed in the toolbar.

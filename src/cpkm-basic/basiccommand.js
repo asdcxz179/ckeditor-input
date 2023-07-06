@@ -24,7 +24,7 @@ export default class CpkmBasicCommand extends Command {
      *
      * @fires execute
      */
-    execute({target, width}) {
+    execute({target, width, alignment}) {
         const model = this.editor.model;
         const selection = editor.model.document.selection;
         model.change(writer => {
@@ -32,6 +32,7 @@ export default class CpkmBasicCommand extends Command {
                 ...Object.fromEntries( selection.getAttributes() ),
                 "data-target": target,
                 "data-width": width,
+                "alignment": alignment,
             });
             model.insertObject(BasicInsertElement, null, null, { setSelection: 'on' });
             // const selection = editor.model.document.selection;

@@ -24,9 +24,11 @@ export default class CpkmBasicEditing extends Plugin {
             model:  ( viewElement, { writer: modelWriter } ) => {
                 const target = viewElement.getAttribute( 'data-target' );
                 const width = viewElement.getAttribute( 'data-width' );
+                const alignment = viewElement.getAttribute( 'alignment' );
                 return modelWriter.createElement( 'CpkmBasic' ,{
                     "data-target": target,
                     "data-width": width,
+                    alignment: alignment,
                 });
             }
         } );
@@ -46,16 +48,27 @@ export default class CpkmBasicEditing extends Plugin {
         function createCpkmBasicView( modelItem, viewWriter ) {
             const target = modelItem.getAttribute( 'data-target' );
             const width = modelItem.getAttribute( 'data-width' );
+            const alignment = modelItem.getAttribute( 'alignment' );
 
             let extend = {
 
             };
+
+            let styles = [];
             if(width) {
-                extend.style = `min-width:${width}px;`;
+                styles.push(`min-width:${width}px;`);
+            }
+            
+            if(alignment) {
+                extend["alignment"] = alignment;
             }
 
             if(target) {
                 extend["data-target"] = target;
+            }
+
+            if(styles.length > 0) {
+                extend.style = styles.join();
             }
 
             const CpkmBasicView = viewWriter.createContainerElement( 'span', {
