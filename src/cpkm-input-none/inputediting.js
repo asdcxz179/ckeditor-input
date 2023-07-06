@@ -53,6 +53,7 @@ export default class CpkmInputNoneEditing extends Plugin {
             };
             if(width) {
                 extend.style = `min-width:${width}px;`;
+                extend["data-width"] = width;
             }
 
             if(target) {
